@@ -21,8 +21,8 @@
   <h1>reader</h1>
   <div id="menu">
    <a href="./settings"><img src="./static/icon-settings.png" /></a>
-   <noscript> <input type="submit" value="refresh" /> </noscript>
-   <script> document.write('<a href="javascript:location.reload()"><img src="./static/icon-refresh.png" /></a>'); </script>
+   <input type="submit" value="refresh" />
+   <input type="image" onclick="javascript:location.reload(); return false;" src="./static/icon-refresh.png" />
    <a href="javascript:$('#search').toggle();$('#search input').focus();"><img src="./static/icon-search.png" /></a>
   </div>
  </header>
@@ -38,8 +38,10 @@
 
 <br class="clear" />
 
-<a class="showsearch">search</a>
-<form id="search"> <input type="text" name="q" /> </form>
+<form id="search">
+ <a class="showsearch">search</a>
+ <input type="text" name="q" />
+</form>
 
 </body>
 

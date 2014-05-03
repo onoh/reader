@@ -18,6 +18,7 @@ input[type=submit] { padding: 4px 8px; color: #fff; background: #333; border: no
  #side header h1 { margin: 8px 8px; padding: 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 2px; }
 
 #menu { text-align: center; }
+ #menu input[type=submit] { display: none; }
 
 #genres { margin-top: 20px; }
  #genres a { display: block; margin: 4px; padding: 4px 4px 4px 8px; text-transform: uppercase; font-weight: bold; }
@@ -93,7 +94,7 @@ div.genre { float: left; width: 17%; margin-right: 1%; }
 #add { font-family: Copperplate; }
 
 #search { display: none; position: absolute; top: 40px; left: 200px; background: #fff; }
-#search input { padding: 4px; border-radius: 4px; border: 2px solid #999; background: #fff; width: 300px; }
+#search input { padding: 4px; border-radius: 4px; border: 2px solid #999; width: 300px; }
 
 @media screen and (min-width: 800px) {
   #body { height: 92%; }
@@ -103,7 +104,7 @@ div.genre { float: left; width: 17%; margin-right: 1%; }
 
 @media screen and (min-width: 0px) and (max-device-width: 480px) {
 
- body, div.entry, div.entry p.info { color: #fff; background: #000; }
+ body, div.entry, div.entry p.info, #search { color: #fff; background: #000; }
 
  #side { float: none; width: 100%; position: fixed; top: 0; right: 0; background: rgba(230,230,230,0.7); }
  #genres { display: none; }
@@ -112,6 +113,7 @@ div.genre { float: left; width: 17%; margin-right: 1%; }
  #menu { float: right; margin: 4px 8px; padding: 4px; }
  #menu a { display: none; }
  #menu input[type=submit] { display: inline-block; }
+ #menu input[type=image] { display: none; }
 
  #navigation { display: none; }
  
@@ -133,9 +135,13 @@ div.genre { float: left; width: 17%; margin-right: 1%; }
  div.entry a { color: #fff; text-decoration: none; }
  div.summary { }
 
- a.showsearch { display: inline-block; margin: 4px; padding: 4px; color: #fff; background: #666; }
- a.showsearch:hover+#search { display: block; }
- #search { display: none; position: fixed; bottom: 0; left: 0; }
+ #search { display: block; position: static; }
+ #search input { display: none; margin-left: 5%; border-radius: 0; width: 90%; z-index: 50; }
+ #search input:hover, #search input:focus { display: block; }
+ #search a.showsearch { display: inline-block; margin: 4px; padding: 4px; color: #fff; background: #666; }
+ #search a.showsearch:hover+input { display: block; }
+/*#search { display: none; position: absolute; top: 40px; left: 200px; background: #fff; }
+#search input { padding: 4px; border-radius: 4px; border: 2px solid #999; background: #fff; width: 300px; } */
 
 
 }
