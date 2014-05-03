@@ -1,0 +1,141 @@
+html, body { margin: 0; padding: 0; }
+body { font-family: "Ubuntu Mono", Arial, sans-serif; font-size: 100%; background: rgba(200,200,200,0.1); letter-spacing: 1px; }
+
+textarea { width: 100%; height: 200px; }
+.left { float: left; }
+.right { float: right; }
+.clear { clear: both; }
+h1, h2, h3, h4, h5, h6 { margin: 4px; padding: 4px; font-size: 100%; }
+p { margin: 2px; padding: 2px; }
+a { color: #2a2a2a; text-decoration: none; }
+form { }
+input[type=text] { padding: 4px 8px; border: 2px solid #333; font-family: Ubuntu; }
+input[type=submit] { padding: 4px 8px; color: #fff; background: #333; border: none; letter-spacing: 2px; }
+
+#side { width: 15%; float: left; }
+
+#side header { text-align: center; }
+ #side header h1 { margin: 8px 8px; padding: 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 2px; }
+
+#menu { text-align: center; }
+
+#genres { margin-top: 20px; }
+ #genres a { display: block; margin: 4px; padding: 4px 4px 4px 8px; text-transform: uppercase; font-weight: bold; }
+ #genres a:hover { color: #fff; background: #333; border-radius: 4px; }
+ #genres a span { float: right; font-weight: normal; color: #666; text-shadow: 0px 0px #ccc; font-size: 60%; letter-spacing: 1px; }
+ #genres ul { display: none; margin: 0; padding: 0 8px 0 12px; list-style-type: none; font-size: 70%; }
+ #genres li { margin: 0; padding: 0; }
+ #genres li a { display: inline-block; margin: 0; padding: 2px 4px; white-space: nowrap; overflow: hidden; line-height: 120%; }
+ #genres li span { float: right; margin-top: 4px; font-size: 70%; color: #666; text-shadow: 0px 0px #ccc; font-family: Ubuntu; }
+
+#navigation { margin-top: 30px; text-align: center; }
+
+#main { width: 85%; float: right; }
+ #main header {}
+ #title { float: left; }
+ #title h2 { margin: 10px 4px 0; padding: 4px 8px; letter-spacing: 2px; text-transform: uppercase; color: #fff; background: #333; }
+ #title h3 { display: none; }
+ #sort { float: right; padding: 12px 30px 4px 0; font-weight: bold; }
+ #sort a { float: right; display: inline-block; margin-left: 10px; padding: 2px 4px; cursor: pointer; width: 70px; text-align: center; text-transform: uppercase; font-size: 80%; background: #ccc; }
+
+#body { clear: both; padding: 0; overflow: auto; }
+
+ div.entry { float: left; margin: 10px 2px 10px 2px; width: 19%; border: 3px solid #333; border-radius: 4px; background: #fff; }
+
+ div.entry p.info { height: 26px; background: rgba(234,213,107,0.2); }
+ p.info a.feed { float: right; font-size: 70%; padding-top: 6px; cursor: pointer; }
+/*
+ p.info a.icon { float: left; cursor: pointer; background-position: center center; background-repeat: no-repeat; }
+ p.info a.save { opacity: 0.3; margin-bottom: -10px; display: inline-block; width: 24px; height: 30px; background-size: 32px 32px; }
+ p.info a.save:hover { opacity: 1.0; }
+ div.save0 p.info a.save { background-image: url("icon-save.png"); }
+ div.save1 p.info a.save { background-image: url("icon-saved.png"); opacity: 1; }
+ p.info a.read { opacity: 0.3; margin-bottom: -10px; display: inline-block; width: 24px; height: 30px; background-image: url("icon-read.png"); background-size: 16px 16px; }
+ div.read1 p.info a.read { opacity: 1; }
+ p.info a.read:hover { opacity: 1.0; }
+*/
+
+ input[type=checkbox].icon { display:none; }
+ input[type=checkbox].icon+label { float: left; display: inline-block; width: 24px; height: 30px; padding: 0; opacity: 0.3; background-position: center center; background-repeat: no-repeat; cursor: pointer; }
+ input[type=checkbox].icon+label:hover { opacity: 1; }
+
+ input[type=checkbox].save+label { background-image: url("icon-save.png"); background-size: 32px 32px; }
+ input[type=checkbox].save:checked+label { background-image: url("icon-saved.png"); opacity: 1; }
+
+ input[type=checkbox].read+label { background-image: url("icon-read.png"); background-size: 16px; 16px; }
+ input[type=checkbox].read:checked+label { opacity: 1; }
+
+ p.date { clear: both; text-align: right; font-size: 70%; font-weight: bold; }
+
+ div.body { clear: both; cursor: pointer; }
+ div.body p.title { padding: 4px; font-size: 90%; letter-spacing: 0; font-weight: bold; line-height: 130%; }
+ div.body p.title:hover { overflow: visible; height: auto; }
+
+ div.summary { font-size: 80%; padding: 0 5px; overflow: hidden; line-height: 120%; }
+ div.summary p, div.summary span, div.summary blockquote { margin: 0; padding: 0; font-size: 100% !important; line-height: 120%; }
+ div.summary img { display: none; max-height: 100px; max-width: 200px; }
+ div.summary a { display: none; }
+
+ #body div.loading { margin-bottom: 20px; padding: 20px; font-family: Copperplate; }
+ #body div.loading img { margin-right: 10px; }
+
+
+div.genre { float: left; width: 17%; margin-right: 1%; }
+ div.genre p { font-size: 90%; line-height: 140%; cursor: pointer; }
+ div.genre p.enable0 { opacity: 0.5; }
+/*
+.settings p { float: left; margin-bottom: 4px; padding: 4px; width: 30%; margin-right: 1%; cursor: pointer; }
+.settings p:hover { color: #fff; background: #333; border-radius: 4px; }
+*/
+ 
+#offset { display: none; }
+
+#add { font-family: Copperplate; }
+
+#search { display: none; position: absolute; top: 40px; left: 200px; background: #fff; }
+#search input { padding: 4px; border-radius: 4px; border: 2px solid #999; background: #fff; width: 300px; }
+
+@media screen and (min-width: 800px) {
+  #body { height: 92%; }
+  div.entry { height: 300px; }
+  div.summary { max-height: 150px; }
+}
+
+@media screen and (min-width: 0px) and (max-device-width: 480px) {
+
+ body, div.entry, div.entry p.info { color: #fff; background: #000; }
+
+ #side { float: none; width: 100%; position: fixed; top: 0; right: 0; background: rgba(230,230,230,0.7); }
+ #genres { display: none; }
+
+ #side header h1 { float: left; margin: 4px 8px; color: #333; }
+ #menu { float: right; margin: 4px 8px; padding: 4px; }
+ #menu a { display: none; }
+ #menu input[type=submit] { display: inline-block; }
+
+ #navigation { display: none; }
+ 
+ #main { float: none; width: 100%; margin-top: 50px; }
+ #title h2 { display: none; }
+ #title h3 { display: inline-block; float: left; margin: 10px 4px 0 10px; padding: 4px 8px; letter-spacing: 2px; text-transform: uppercase; color: #fff; background: #333; }
+ #title h3 a { color: #fff; }
+
+ #sort { padding-right: 10px; }
+
+ #body { padding: 0; }
+
+/* div.entry:nth-child(n+21) { display: none; } */
+
+ div.entry { float: none; width: 99%; padding: 1px 0 10px; border: none; border-bottom: 2px dotted #666; }
+ div.entry p.info { height: 26px; }
+ input[type=checkbox].icon+label { margin-left: 10px; background-color: #666; opacity: 1; }
+ input[type=checkbox].icon:checked+label { background-color: #fff; }
+ div.entry a { color: #fff; text-decoration: none; }
+ div.summary { }
+
+ a.showsearch { display: inline-block; margin: 4px; padding: 4px; color: #fff; background: #666; }
+ a.showsearch:hover+#search { display: block; }
+ #search { display: none; position: fixed; bottom: 0; left: 0; }
+
+
+}

@@ -1,0 +1,58 @@
+<html>
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+ <link href="static/mini.css?{{ res.time }}" rel="stylesheet" type="text/css">
+ <title> READER </title>
+</head>
+
+<body>
+
+<div id="header"> <h1>reader</h1> </div>
+
+{% if res.entry %}
+<div id="main">
+ <p id="feed"> <span class="date"> {{ res.entry[4][5:16].replace("-",".") }} </span> {{ res.entry[8] }} </p>
+ <h2> <a href="{{ res.entry[3] }}" target="_blank"> {{ res.entry[2] }}</a> </h2>
+<!-- <p> <span class="date"> {{ res.entry[4][5:16].replace("-",".") }} </span> </p> -->
+ <div id="body">
+  {{res.entry[5]|safe}}
+  <br class="clear" />
+ </div>
+</div>
+
+<div id="saved"{%if res.entry[7] == 1%}class="on"{%endif%}> <a href="./mini?saved={{ res.entry[1] }}"></a> </div>
+
+<div id="navi">
+ <a href="./mini">next</a>
+</div>
+
+{% elif res.list %}
+<div id="list">
+ {% for entry in res.list %}
+  <p> <span class="date"> {{ entry[4][5:16].replace("-",".") }} </span> <span class="feed"> {{ entry[8] }} </span> <br /> <a href="{{ entry[3] }}" target="_blank"> {{ entry[2][:20] }}</a> ... </p>
+ {% endfor %}
+ <div class="menu">
+  {% if not res.offset == 0 %}
+  <a class="prev" href="./mini?{{ res.query }}&offset={{ res.offset - 40 }}">prev</a>
+  {% endif %}
+  {% if len(res.list) == 40 %}
+  <a class="next" href="./mini?{{ res.query }}&offset={{ res.offset + 40 }}">next</a>
+  {% endif %}
+ </div>
+</div>
+
+{% endif %}
+
+<div id="menu">
+ <a class="search">search</a>
+ <form id="search"> <input type="text" name="q" /> </form>
+ <a href="./mini?list=saved">saved</a>
+</div>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+<html>
+
+{% if not res.error and res.blog %}
+<head>
+ <meta charset="UTF-8">
+ <script type="text/javascript" src="/common/js/jquery.js"></script>
+ <script type="text/javascript" src="static/util.js"></script>
+ <link href="static/styles.css" rel="stylesheet" type="text/css">
+ <style type="text/css">
+ {% for genre in res.genres %}
+   {% for feed in res.genres[genre] %}
+    span.feed{{ feed[0] }}:before { content: "{{ feed[2][0:9] }}"; }
+   {% endfor %}
+ {% endfor %}
+ </style>
+ <title> {{ res.blog[2] }} - reader</title>
+</head>
+
+<body>
+
+<div id="header">
+<h1>reader</h1>
+<a href="./blog?id={{res.blog[0]}}"><img src="./static/icon-refresh.png" /></a>
+</div>
+
+<div id="side" class="left">
+ <h2> <a href="./"> All </a> </h2>
+{% for genre in res.genres %}
+ <h2 class="genre"> <a href="./genre?{{ genre }}">{{ genre }}</a> </h2>
+ <ul>
+ {% for feed in res.genres[genre] %}
+  <li i="{{ feed[0] }}"><a href="./blog?id={{ feed[0] }}">{{ feed[2] }}</a> <span class="unread">{{ feed[3] }}</span></li>
+ {% endfor %}
+ </ul>
+
+{% endfor %}
+
+</div>
+
+<div id="main" class="left">
+ <h2>{{ res.blog[2] }}</h2>
+{% for entry in res.entries %}
+ <p id="entry{{entry[1]}}" class="read{{entry[6]}}"><span class="save{{entry[7]}}"></span><span class="date">{{ entry[4][5:16].replace("-",".") }}</span><span class="title">{{ entry[2] }}</span></p>
+ <div class="summary">
+   <h3 class="title"><a href="{{entry[3]}}" target="_blank">{{ entry[2] }}</a></h3>
+  {{ entry[5]|safe }}
+ </div>
+{% endfor %}
+</div>
+
+<br class="clear" />
+
+</body>
+
+{% endif %}
+
+</html>

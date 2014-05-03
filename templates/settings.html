@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %} settings {% endblock %}
+
+{% block side %}
+ <div id="genres">
+  <a href="./"> All </a>
+  <a href="./?saved=1"> Saved <span class="saved">{{ res.saved }}</span></a>
+
+{% for genre in res.genres %}
+  <a class="genre" href="./genre?genre={{ genre.label }}">{{ genre.label }} <span class="unread">{{ genre.unread }}</span></a>
+  <ul genre="{{ genre.label }}">
+ {% for blog in genre.blogs %}
+   <li i="{{ blog.id }}"><a href="./blog?id={{ blog.id }}">{{ blog.title }}</a> <span class="unread">{{ blog.unread }}</span></li>
+ {% endfor %}
+  </ul>
+{% endfor %}
+ </div>
+</div>
+{% endblock %}
+
+{% block main %}
+ <div id="body" class="settings">
+{% for genre in res.genres %}
+  <div class="genre" genre="{{ genre.label }}">
+   <h3> {{ genre.label }} </h3>
+ {% for blog in genre.blogs %}
+   <p class="title enable{{ blog["get"] }}" blogid="{{ blog.id }}"> {{ blog.title }} </p>
+ {% endfor %}
+  </div>
+{% endfor %}
+  <br class="clear" />
+  <form id="add">
+   <p> add </p>
+   <p>
+    rss <input class="url" type="text" /> 
+    title <input class="title" type="text" />
+    genre <input class="genre" type="text" />
+    <input type="submit" value="submit">
+   </p>
+  </form>
+ </div>
+
+{% endblock %}
+

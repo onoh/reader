@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% if res.query %} {% set query = res.query+"&" %} {% endif %}
+{% if res.params.sort == "asc" %} {% set sort = { "text": "older", "val": "desc", "hover": "newer" } %} 
+{% else %} {% set sort = { "text": "newer", "val": "asc", "hover": "older" } %} {% endif %}
+{% if res.params.read == 1 %} {% set read = { "text": "read", "val": "0", "hover": "unread" } %} 
+{% else %} {% set read = { "text": "unread", "val": "1", "hover": "read" } %} {% endif %}
+{% if res.params.saved == 1 %} {% set saved = { "text": "saved", "val": "0", "hover": "unsaved" } %} 
+{% else %} {% set saved = { "text": "unsaved", "val": "1", "hover": "saved" } %} {% endif %}
+
+
+{% block styles %}
+ {% for genre in res.genres %}
+   {% for blog in genre.blogs %}p.info a.feed[feed="{{ blog.id }}"]::before { content: "{{ blog.title }}"; } {% endfor %}
+ {% endfor %}
+ {% if res.genre %}
+   #genres ul[genre="{{ res.genre }}"] { display: block; }
+ {% endif %}
+   a.sort_sort::before { content: "{{ sort.text }}"; } 
+   a.sort_sort:hover::before { content: "{{ sort.hover }}"; } 
+   a.sort_read::before { content: "{{ read.text }}"; } 
+   a.sort_read:hover::before { content: "{{ read.hover }}"; } 
+   a.sort_saved::before { content: "{{ saved.text }}"; } 
+   a.sort_saved:hover::before { content: "{{ saved.hover }}"; } 
+{% endblock %}
+
+{% block title %} {{ res.title }} {% endblock %}
+
+{% block side %}
+ <div id="genres">
+  <a href="./"> All </a>
+  <a href="./?saved=1"> Saved <span class="saved">{{ res.saved }}</span></a>
+
+{% for genre in res.genres %}
+  <a class="genre" href="./genre?genre={{ genre.label }}">{{ genre.label }} <span class="unread">{{ genre.unread }}</span></a>
+  <ul genre="{{ genre.label }}">
+ {%- for blog in genre.blogs %}
+   <li i="{{ blog.id }}"><a href="./blog?id={{ blog.id }}">{{ blog.title }}</a> <span class="unread">{{ blog.unread }}</span></li>
+ {%- endfor %}
+  </ul>
+{% endfor %}
+ </div>
+
+ <div id="navigation">
+  <input type="hidden" name="offset" value="{{ res.params.offset }}" />
+  <input type="submit" name="prev" value="prev" />
+  <input type="submit" name="next" value="next" />
+ </div>
+</div>
+{% endblock %}
+
+{% block main %}
+
+
+ <header>
+  <div id="title">
+   <h2> {{ self.title() }} </h2>
+   <h3><a href="./">ALL</a></h3> <!--<h3><a href="./?saved=1&read=1">SAVED</a></h3> -->
+  </div>
+  <div id="sort">
+   <a class="sort_sort" href="{{ res.query }}read={{res.params.read}}&sort={{ sort.val }}&saved={{ res.params.saved }}"></a>
+   <a class="sort_read" href="{{ res.query }}read={{ read.val }}&sort={{ res.params.sort }}&saved={{ res.params.saved }}"></a>
+   <a class="sort_saved" href="{{ res.query }}read={{res.params.read}}&sort={{ res.params.sort }}&saved={{ saved.val }}"></a>
+<!--
+   <a href="{{ res.query }}read={{res.params.read}}&sort={{ sort.val }}&saved={{ res.params.saved }}">{{ sort.text }}</a>
+   <a href="{{ res.query }}read={{ read.val }}&sort={{ res.params.sort }}&saved={{ res.params.saved }}">{{ read.text }}</a>
+   <a href="{{ res.query }}read={{res.params.read}}&sort={{ res.params.sort }}&saved={{ saved.val }}">{{ saved.text }}</a>
+-->
+<!--  <a {% if res.params.sort=="asc" %}class="on"{% endif %} href="./?{{ query }}sort=older&read={{res.params.read}}">older</a>
+  <a {% if res.params.sort=="desc" %}class="on"{% endif %} href="./?{{ query }}sort=desc&read={{res.params.read}}">newer</a> -->
+<!--  <a {% if res.params.read==1 %}class="on"{% endif %} href="./?{{ query }}read=1&sort={{res.params.sort}}">read</a>
+  <a {% if res.params.read==0 %}class="on"{% endif %} href="./?{{ query }}read=0&sort={{res.params.sort}}">unread</a> -->
+  </div>
+ </header>
+
+<!--<form method="post"> -->
+ <div id="body">
+{% for entry in res.entries %}
+  <div id="entry{{entry.id}}" class="entry"> <!--read{{entry.read}} save{{entry.saved}}"> -->
+   <p class="info">
+    <input type="checkbox" id="save_{{entry.id}}" name="save_{{entry.id}}" class="icon save" {% if entry.saved==1 %}checked{% endif %}><label for="save_{{entry.id}}"></label>
+    <input type="checkbox" id="read_{{entry.id}}" name="read_{{entry.id}}" class="icon read" {% if entry.read==1 %}checked{% endif %}><label for="read_{{entry.id}}"></label>
+<!--    <a href="./entry?id={{entry.id}}&cmd={% if res.params.saved==0 %}save{% else %}unsave{% endif %}" class="icon save"></a> -->
+<!--    <a href="./entry?id={{entry.id}}&cmd={% if res.params.read==0 %}read{% else %}unread{% endif %}" class="icon read"></a> -->
+    <a href="./blog?id={{entry.feed_id}}" class="feed" feed="{{ entry.feed_id }}"></a>
+   </p>
+   <p class="date">{{ time.strftime("%m/%d %H:%M",time.localtime(entry.date)) }}</p>
+   <div class="body" href="{{ entry.url }}">
+    <p class="title"><a href="entry?id={{ entry.id }}&cmd=open" target="_blank">{{ entry.title }}</a></p>
+    <div class="summary"> {{ entry.summary|safe }} </div>
+   </div>
+  </div>
+{% endfor %}
+ </div>
+<!--  <input type="submit" value="refresh" />
+ </form> -->
+ 
+{% endblock %}
