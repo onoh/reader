@@ -8,4 +8,5 @@ simple rss reader for me.
 - python
 - python-flask
 - python-feedparser
-
+- jQuery
+- jQuery Mobile
