@@ -39,8 +39,12 @@ class db(object):
   def entries( self  ):
     res = { "entries": "" }
     read = " read = %(read)s and"%app.params if app.params["saved"] == 0 else " read in (0,1) and "
-    search = app.search + read + " saved = %(saved)s order by date %(sort)s limit %(limit)s offset %(offset)s" % app.params
-    if app.params["search"]: search = "title like '%%%(search)s%%' order by date %(sort)s limit %(limit)s offset %(offset)s" % app.params
+    search = app.search + read + " saved = %(saved)s order by id %(sort)s limit %(limit)s" % app.params
+    if app.params["get"] == "older":
+      search = "id < %d and"%( app.params["id"] ) + read + " saved = %(saved)s order by id desc limit %(limit)s" % app.params
+#    search = app.search + read + " saved = %(saved)s order by date %(sort)s limit %(limit)s offset %(offset)s" % app.params
+    if app.params["search"]: search = "title like '%%%(search)s%%' order by date %(sort)s limit %(limit)s" % app.params
+#    if app.params["search"]: search = "title like '%%%(search)s%%' order by date %(sort)s limit %(limit)s offset %(offset)s" % app.params
 #    search = app.search + " read = %(read)s and saved = %(saved)s order by date %(sort)s limit %(limit)s offset %(offset)s" % app.params
     res["entries"] = self.select( 'select * from entries where %s' % search )
 
@@ -69,7 +73,7 @@ class db(object):
   def update_entries( self, lists ):
     for data in lists:
       if len(data[0].split("_")) == 2:
-        cmds = { "open": "read = 1", "read": "read = 1", "unread": "read = 0", "save": "saved = 1", "unsave": "saved = 0" }
+        cmds = { "open": "read = 1", "read": "read = 1", "unread": "read = 0", "saved": "saved = 1", "unsaved": "saved = 0" }
         [ cmd, id ] = data[0].split("_")
         if cmd in cmds.keys(): update = cmds.items()[cmds.keys().index(cmd)][1]
         if update: app.db.update_entry( id, update)
@@ -93,22 +97,27 @@ def before_request():
     saved = request.args.get( "saved", default=0, type=int )
     id = request.args.get( "id", default=0, type=int )
     cmd = request.args.get( "cmd", default="", type=str )
+    get = request.args.get( "get", default="", type=str )
     genre = request.args.get( "genre", default="", type=str )
     q = request.args.get( "q", default="", type=unicode )
-
 
     if request.args.get("sort") in [ "older", "asc"]: sort = "asc"
     else: sort = "desc"
 
-    offset = request.form.get( "offset", default=0, type=int )
-    if request.form.has_key("next"): offset = offset + limit
-    if request.form.has_key("prev") and offset >= limit: offset = offset - limit
+#    offset = request.form.get( "offset", default=0, type=int )
+#    if request.form.has_key("next"): offset = offset + limit
+#    if request.form.has_key("prev") and offset >= limit: offset = offset - limit
 
-
-    app.params = { "genre": genre, "cmd": cmd, "id": id, "limit": limit, "offset": offset, "saved": saved, "sort": sort, "read": read, "search": q }
+    app.params = { "genre": genre, "cmd": cmd, "id": id, "limit": limit, "saved": saved, "sort": sort, "read": read, "search": q, "get": get }
+#    app.params = { "genre": genre, "cmd": cmd, "id": id, "limit": limit, "offset": offset, "saved": saved, "sort": sort, "read": read, "search": q }
 
     app.search = ""
+
+#    if get == "newer":
+#      app.search = "id > %d and"%( app.params["id"] )
+
     app.jsonify = True if request.args.has_key("json") else False
+    app.mini = True if request.args.has_key("mini") else False
 
     if request.form: app.db.update_entries( request.form.items() )
 
@@ -117,13 +126,30 @@ def before_request():
 def home():
 
     res = { "title": "All", "query": "?" }
-    res.update( app.db.genres() )
+    if not app.mini: res.update( app.db.genres() )
           
 #    if app.params["saved"] == 1: res.update( { "title": "Saved", "query": "?saved=1&" } )
 
     res.update( app.db.entries() )
 
     return response(res)
+
+
+@app.route("/swipe")
+def swipe():
+
+    res = { "title": "All", "query": "?" }
+    res.update( app.db.genres() )
+
+#    if app.params["saved"] == 1: res.update( { "title": "Saved", "query": "?saved=1&" } )
+
+    res.update( app.db.entries() )
+
+    res.update( { "params": app.params } )
+    return render_template( "mobile.html", res=res, time=time )
+#    return response(res)
+
+
 
 
 @app.route("/blog", methods=['GET', 'POST'])
@@ -166,7 +192,7 @@ def entry():
     if ( app.params["id"] and app.params["cmd"] ):
 
       update = ""
-      cmds = { "open": "read = 1", "read": "read = 1", "unread": "read = 0", "save": "saved = 1", "unsave": "saved = 0" }
+      cmds = { "open": "read = 1", "read": "read = 1", "unread": "read = 0", "saved": "saved = 1", "unsaved": "saved = 0" }
       if app.params["cmd"] in cmds.keys(): update = cmds.items()[cmds.keys().index(app.params["cmd"])][1]
 
       if update: res = app.db.update_entry( app.params["id"], update)
@@ -246,7 +272,8 @@ def response( res ):
       obj.mimetype='application/json'
     else:
       res.update( { "params": app.params } )
-      obj = render_template( "index.html", res=res, time=time )
+      if ( "Android" in request.headers.get("User-Agent") ): obj = render_template( "mobile.html", res=res, time=time )
+      else: obj = render_template( "index.html", res=res, time=time )
 #      obj = render_template( "debug.html", res=res )
 
     return obj

@@ -47,8 +47,8 @@ def update_entries( d, id, entries ):
 
         target = d.select('select id from entries where url = ?',[ entry.link ])
         if not target and not re.search("^PR|AD",entry.title):
-#          print article
-          d.update('insert into entries values(null,?,?,?,?,?,0,0)',article)
+#            print article
+            d.update('insert into entries values(null,?,?,?,?,?,0,0)',article)
 
     unread = d.select('select count(read) from entries where feed_id=? and read != 1',[ id ])[0][0]
 #    print unread
@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     d = db()
 
-    urls = d.select('select id,feed_url from blogs where get = 1 limit 1')
+    urls = d.select('select id,feed_url from blogs where get = 1')
     threads = [threading.Thread(target=getfeed, args=(id,url,)) for id, url in urls]
 
     for thread in threads: thread.start()

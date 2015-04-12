@@ -1,0 +1,47 @@
+
+html, body { margin: 0; padding: 0; }
+
+body { color: #fff; background: #000; font-size: 90%; letter-spacing: 1px; }
+
+p { padding: 2px 4px; }
+blockquote { margin: 4px; padding: 4px; }
+a { text-decoration: none; }
+
+#header { letter-spacing: 2px; }
+ #header a { color: #000; }
+#menu { float: right; margin-top: -28px; margin-right: 4px; font-size: 80%; }
+ #saved, #read { margin-right: 6px; padding: 4px 6px; color: #fff; background: #000; border-radius: 2px; }
+
+div.entry { }
+div.summary { min-height: 340px; height: 340px; overflow: auto; }
+div.body { clear: both; }
+
+p.info { padding-left: 8px; }
+ span.save, span.read { display: inline-block; margin-right: 8px; width: 26px; height: 32px; padding: 0; opacity: 0.6; background-position: center center; background-repeat: no-repeat; cursor: pointer; background-color: #fff; }
+ span.save { background-image: url("icon-save.png"); background-size: 32px 32px; }
+ span.read { background-image: url("icon-read.png"); background-size: 20px 20px; }
+
+ div.entry[saved="1"] span.save, div.entry[read="1"] span.read { opacity: 1; }
+
+span.feed { float: right; font-size: 90%; }
+
+p.date { margin-top: -30px; text-align: right; font-size: 80%; font-weight: bold; }
+p.title { margin-top: -10px; font-weight: bold; cursor: pointer; }
+ p.title a { color: #fff; }
+
+div.summary { padding: 4px; }
+ div.summary strong { font-weight: normal; }
+ div.summary img { display: block; float: none !important; }
+ div.summary a { display: none; }
+
+
+/* jquery mobile theme */
+
+.ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper { color: #fff; background: #000; text-shadow: none; }
+div#header.ui-header.ui-bar-inherit { background: rgba(230,230,230,0.7); border: none; text-shadow: none; }
+.ui-header .ui-title { margin: 0; padding-left: 10px; text-align: left; font-size: 110%; }
+.ui-mobile, .ui-mobile body { height: auto; }
+
+@media screen and (min-width: 800px) {
+  body { width: 360px; }
+}

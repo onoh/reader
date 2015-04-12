@@ -1,0 +1,35 @@
+<html>
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+ <link href="./static/jquery.mobile-1.4.3/jquery.mobile-1.4.3.min.css" rel="stylesheet" type="text/css">
+ <link href="./static/swipe.css?{{ res.time }}" rel="stylesheet" type="text/css">
+ <script type="text/javascript" src="./static/jquery.js"></script>
+ <script type="text/javascript" src="./static/jquery.mobile-1.4.3/jquery.mobile-1.4.3.min.js"></script>
+ <script type="text/javascript" src="./static/swipe.js?{{ res.time }}"></script>
+ <style type="text/css">
+ {% for genre in res.genres %}
+   {% for blog in genre.blogs %}span.feed[feed="{{ blog.id }}"]::before { content: "{{ blog.title }}"; } {% endfor %}
+ {% endfor %}
+ </style>
+ <title> {% block title %} untitled. {% endblock %} - reader </title>
+
+</head>
+
+<body class="ui-page-theme-a">
+
+<div data-role="page" id="main"> 
+
+ <div id="header" data-role="header">
+  <h1> READER </h1>
+  <div id="menu"> <span id="saved">saved</span> <span id="read">read</span> </div> </h1>
+ </div>
+
+ <div id="entries"> </div>
+
+</div>
+
+</body>
+
+</html>
